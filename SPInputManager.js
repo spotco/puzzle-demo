@@ -66,26 +66,30 @@ function SPInputManager() {
 	window.addEventListener("keyup",function(evt) {
 		if (self.__keyup_queue.indexOf(evt.keyCode) == -1) self.__keyup_queue.push(evt.keyCode);
 	});
-	document.getElementById("game").addEventListener("mousedown",function(evt) {
+	var canvas = document.getElementById("game")
+	canvas.addEventListener("mousedown",function(evt) {
 		if (!self._mouse_down) {
 			self._mouse_just_pressed = true;
 		}
-		self._mouse_down = true;
-		self._mouse_code = evt.which;
-		self._mouse_position.x = parseInt(evt.layerX);
-		self._mouse_position.y = parseInt(evt.layerY);
+		self._mouse_down = true
+		self._mouse_code = evt.which
+		var rect = canvas.getBoundingClientRect()
+		self._mouse_position.x = (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width
+		self._mouse_position.y = (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
 	});
-	document.getElementById("game").addEventListener("mousemove",function(evt) {
-		self._mouse_position.x = parseInt(evt.layerX);
-		self._mouse_position.y = parseInt(evt.layerY);
+	canvas.addEventListener("mousemove",function(evt) {
+		var rect = canvas.getBoundingClientRect()
+		self._mouse_position.x = (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width
+		self._mouse_position.y = (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
 	});
-	document.getElementById("game").addEventListener("mouseup",function(evt) {
+	canvas.addEventListener("mouseup",function(evt) {
 		if (self._mouse_down) {
 			self._mouse_just_released = true;
 		}
-		self._mouse_down = false;
-		self._mouse_position.x = parseInt(evt.layerX);
-		self._mouse_position.y = parseInt(evt.layerY);
+		self._mouse_down = false
+		var rect = canvas.getBoundingClientRect()
+		self._mouse_position.x = (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width
+		self._mouse_position.y = (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
 	});
 	
 	return self;
